@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +16,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $users = User::all();
+    return view('welcome', compact('users'));
 });
+
+Route::get('/user/{id}', function ($id){
+   $user = User::find($id);
+   return view('show', compact('user'));
+});
+
+Route::get('/articles', 'App\Http\Controllers\ArticleController@index');
+
+
+Route::name('article.show')->get('/article/{articleSlug}', 'App\Http\Controllers\ArticleController@show');

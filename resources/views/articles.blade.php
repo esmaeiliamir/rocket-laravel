@@ -812,11 +812,11 @@
         </div>
 
         <div class="mt-16">
-            @foreach($users as $user)
+            @foreach($articles as $article)
                 <div>
-                    <a href="/user/{{$user->id}}">
+                    <a href="{{ route('article.show', ['articleSlug' => $article->slug]) }}">
                         <h2 class="mt-6 text-xl font-semibold text-gray-900 dark:text-white">
-                            {{$user->name}}
+                            {{$article->title}}
                         </h2>
                     </a>
                 </div>
