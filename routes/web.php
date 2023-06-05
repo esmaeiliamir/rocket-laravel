@@ -15,17 +15,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    $users = User::all();
-    return view('welcome', compact('users'));
-});
 
-Route::get('/user/{id}', function ($id){
-   $user = User::find($id);
-   return view('show', compact('user'));
-});
-
-Route::get('/articles', 'App\Http\Controllers\ArticleController@index');
-
-
-Route::name('article.show')->get('/article/{articleSlug}', 'App\Http\Controllers\ArticleController@show');
+Route::get('/', 'App\Http\Controllers\ArticleController@index');
+Route::get('/article/create', 'App\Http\Controllers\ArticleController@create');
+Route::post('/article', 'App\Http\Controllers\ArticleController@store')->name('article.store');
+Route::get('/article/{article}', 'App\Http\Controllers\ArticleController@show')->name('article.show');
+Route::post('/article/{article}/comment', 'App\Http\Controllers\CommentController@store')->name('comment.store');
