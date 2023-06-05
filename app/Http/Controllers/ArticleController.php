@@ -27,8 +27,12 @@ class ArticleController extends Controller
             'title.required' => 'عنوان رو وارد کن تو رو خدا.'
         ]);
 
+        $id = auth()
+                    ->user()
+                    ->id;
+
         Article::create([
-            'user_id' => 1,
+            'user_id' => $id,
             'title' => request('title'),
             'slug' => request('title'),
             'body' => request('body')

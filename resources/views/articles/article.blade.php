@@ -46,19 +46,21 @@
                 @endforeach
             </div>
         @endif
-        <h4>ارسال کامنت :</h4>
-        <form role="form" action="{{ route('comment.store', ['article' => $article->id]) }}" method="post">
-            {{ csrf_field() }}
-            <div class="form-group">
-                <label for="name">نام</label>
-                <input type="text" name="name" placeholder="نام" class="form-control" rows="3"/>
-            </div>
-            <div class="form-group">
-                <label for="body">متن</label>
-                <textarea name="body" class="form-control" rows="3"></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">ارسال</button>
-        </form>
+        @if(Auth::check())
+            <h4>ارسال کامنت :</h4>
+            <form role="form" action="{{ route('comment.store', ['article' => $article->id]) }}" method="post">
+                {{ csrf_field() }}
+                <div class="form-group">
+                    <label for="name">نام</label>
+                    <input type="text" name="name" placeholder="نام" class="form-control" rows="3"/>
+                </div>
+                <div class="form-group">
+                    <label for="body">متن</label>
+                    <textarea name="body" class="form-control" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">ارسال</button>
+            </form>
+        @endif
     </div>
 
     <hr>
