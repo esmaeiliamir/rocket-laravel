@@ -1,7 +1,6 @@
 <?php
 
-use App\Models\User;
-use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,4 +19,16 @@ Route::get('/', 'App\Http\Controllers\ArticleController@index');
 Route::get('/article/create', 'App\Http\Controllers\ArticleController@create');
 Route::post('/article', 'App\Http\Controllers\ArticleController@store')->name('article.store');
 Route::get('/article/{article}', 'App\Http\Controllers\ArticleController@show')->name('article.show');
-Route::post('/article/{article}/comment', 'App\Http\Controllers\CommentController@store')->name('comment.store');
+Route::post('/article/{article}/comment', 'CommentController@store')->name('comment.store');
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';

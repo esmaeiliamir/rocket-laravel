@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>صحفه اصلی</title>
+    <title>صفحه اصلی</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="/css/fontiran.css" rel="stylesheet">

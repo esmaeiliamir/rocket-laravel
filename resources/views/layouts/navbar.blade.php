@@ -23,9 +23,24 @@
                 <li>
                     <a href="#">تماس با ما</a>
                 </li>
+                @if(!Auth::check())
+                    <li>
+                        <a href="/login">ورود</a>
+                    </li>
+                    <li>
+                        <a href="/register">ثبت نام</a>
+                    </li>
+                @endif
+                @if(Auth::check())
+                    <li>
+                        <a href="/">سلام {{ Auth::user()->name }}</a>
+                    </li>
+                @endif
             </ul>
         </div>
         <!-- /.navbar-collapse -->
     </div>
     <!-- /.container -->
+
+
 </nav><?php
