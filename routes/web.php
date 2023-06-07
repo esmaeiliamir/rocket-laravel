@@ -20,6 +20,7 @@ Route::get('/article/create', 'App\Http\Controllers\ArticleController@create');
 Route::post('/article', 'App\Http\Controllers\ArticleController@store')->name('article.store');
 Route::get('/article/{article}', 'App\Http\Controllers\ArticleController@show')->name('article.show');
 Route::post('/article/{article}/comment', 'CommentController@store')->name('comment.store');
+Route::get('/article/category/{category}', 'App\Http\Controllers\CategoryController@index')->name('category.index');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

@@ -16,34 +16,25 @@
     </div>
 
     <!-- Blog Categories Well -->
+    <?php
+    $categories = \App\Models\Category::all();
+
+    ?>
     <div class="well">
         <h4>دسته بندی بلاگ</h4>
         <div class="row">
             <div class="col-lg-6">
                 <ul class="list-unstyled">
-                    <li><a href="#">دسته بندی</a>
+                    @foreach($categories as $category)
+                    <li><a href="{{ route('category.index', ['category' => $category->name]) }}">
+                            {{ $category->name }}
+                        </a>
                     </li>
-                    <li><a href="#">دسته بندی</a>
-                    </li>
-                    <li><a href="#">دسته بندی</a>
-                    </li>
-                    <li><a href="#">دسته بندی</a>
-                    </li>
+                    @endforeach
                 </ul>
             </div>
             <!-- /.col-lg-6 -->
-            <div class="col-lg-6">
-                <ul class="list-unstyled">
-                    <li><a href="#">دسته بندی</a>
-                    </li>
-                    <li><a href="#">دسته بندی</a>
-                    </li>
-                    <li><a href="#">دسته بندی</a>
-                    </li>
-                    <li><a href="#">دسته بندی</a>
-                    </li>
-                </ul>
-            </div>
+
             <!-- /.col-lg-6 -->
         </div>
         <!-- /.row -->

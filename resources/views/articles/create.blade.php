@@ -21,6 +21,14 @@
             <label style="margin-top: 16px;" for="body" class="form-label">متن مقاله</label>
             <textarea class="form-control" name="body" id="body" rows="7"  placeholder="متن مقاله"></textarea>
         </div>
+        <div class="form-group">
+            <label for="category">دسته بندی ها : </label>
+            <select name="category[]" class="form-control" id="category" title=" دسته بندی مورد نظر خود را انتخاب کنید..." multiple>
+                @foreach( $categories as $id => $name )
+                    <option value="{{ $id }}">{{ $name }}</option>
+                @endforeach
+            </select>
+        </div>
         {{ csrf_field() }}
         <button type="submit" class="btn btn-primary" style="margin-top: 16px;">ثبت مقاله</button>
     </form>
