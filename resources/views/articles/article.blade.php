@@ -24,7 +24,13 @@
     <hr>
 
     <!-- Preview Image -->
-    <img class="img-responsive" src="http://placehold.it/900x300" alt="">
+    @if(!empty($article->image))
+        <img class="img-responsive" src="/images/{{$article->image}}" alt="">
+    @endif
+
+    @if(empty($article->image))
+        <img class="img-responsive" src="http://placehold.it/900x300" alt="">
+    @endif
 
     <hr>
 

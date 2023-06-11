@@ -18,8 +18,7 @@
                     {{ $article->user->name ?? 'None'}}
                 </a>
             </p>
-            <p><span class="glyphicon glyphicon-time"></span>ارسال شده در
-                تاریخ {{ jdate($article->created_at)->format('%B %d, %Y') }}</p>
+            <p><span class="glyphicon glyphicon-time"></span>ارسال شده در تاریخ {{ jdate($article->created_at)->format('%B %d, %Y') }}</p>
             <hr>
             @if(!empty($article->image))
                 <img class="img-responsive" src="/images/{{$article->image}}" alt="">

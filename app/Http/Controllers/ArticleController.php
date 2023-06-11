@@ -6,10 +6,11 @@ use App\Models\Article;
 use App\Models\Category;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ArticleController extends Controller
 {
-    public function index(Article $article) {
+    public function index() {
         $articles = Article::latest()->paginate(4);
         return view('articles.index', compact('articles'));
     }
@@ -20,32 +21,31 @@ class ArticleController extends Controller
         return view('articles.create', compact('categories'));
     }
 
-    public function store() {
+    public function store(Request $request) {
 
-        $this->validate(request(), [
+        Validator::validate($request->post(),[
             'title' => 'required',
             'body' => 'required',
-            'category' => 'required'
+            'category' => 'required',
+//            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ] , [
-            'title.required' => 'عنوان رو وارد کن تو رو خدا.'
+            'title.required' => 'عنوان رو وارد کن.'
         ]);
 
-        $id = auth()
-                    ->user()
-                    ->id;
+        $imageName = time().'.'.$request->image->extension();
+        $request->image->move(public_path('images'), $imageName);
 
-        $article = Article::create([
-            'user_id' => $id,
-            'title' => request('title'),
-            'slug' => request('title'),
-            'body' => request('body')
+
+        $article = auth()->user()->articles()->create([
+            'title' => $request->post('title'),
+            'body' => $request->post('body'),
+            'image' => $imageName
         ]);
 
-        $article->categories()->attach(\request('category'));
+        $article->categories()->attach($request->post('category'));
 
         return redirect('/');
     }
-
     public function show(Article $article) {
         $comments = $article->comments()->get();
         return view('articles.article', compact('article', 'comments'));

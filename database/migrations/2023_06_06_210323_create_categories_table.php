@@ -18,9 +18,12 @@ return new class extends Migration
         });
 
         Schema::create('article_category', function (Blueprint $table) {
-            $table->integer('article_id')->unsigned();
+            $table->unsignedBigInteger('article_id');
             $table->integer('category_id')->unsigned();
             $table->primary(['article_id', 'category_id']);
+
+            $table->foreign('article_id')->references('id')->on('articles');
+
         });
     }
 
