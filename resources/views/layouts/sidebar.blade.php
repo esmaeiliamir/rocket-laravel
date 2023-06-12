@@ -4,14 +4,14 @@
     <!-- Blog Search Well -->
     <div class="well">
         <h4>جستجو در بلاگ</h4>
-        <div class="input-group">
-            <input type="text" class="form-control">
+        <form class="input-group" action="{{ route('search') }}">
+            <input type="text" name="term" class="form-control">
             <span class="input-group-btn">
                             <button class="btn btn-default" type="button">
                                 <span class="glyphicon glyphicon-search"></span>
                         </button>
                         </span>
-        </div>
+        </form>
         <!-- /.input-group -->
     </div>
 
