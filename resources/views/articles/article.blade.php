@@ -18,10 +18,29 @@
     <hr>
 
     <!-- Date/Time -->
+
     <p><span class="glyphicon glyphicon-time"></span> ارسال شده در
         تاریخ {{  jdate($article->created_at)->format('%B %d، %Y') }}</p>
 
+    <div style="display: flex;">
+        @if($liked)
+            <form method="POST" action="{{ route('article.like', $article->id) }}">
+                {{ csrf_field() }}
+                <button type="submit" class="btn btn-danger">Dislike</button>
+            </form>
+        @endif
+        @if(!($liked))
+            <form method="POST" action="{{ route('article.like', $article->id) }}">
+                {{ csrf_field() }}
+                <button type="submit" class="btn btn-success">Like</button>
+            </form>
+        @endif
+
+    </div>
+
     <hr>
+
+
 
     <!-- Preview Image -->
     @if(!empty($article->image))

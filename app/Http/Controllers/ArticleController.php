@@ -91,7 +91,10 @@ class ArticleController extends Controller
 
     public function show(Article $article)
     {
+
+        $liked = $article->likedBy->contains(auth()->user());
+//        return auth()->user()->id;
         $comments = $article->comments()->get();
-        return view('articles.article', compact('article', 'comments'));
+        return view('articles.article', compact('article', 'comments', 'liked'));
     }
 }

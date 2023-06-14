@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\LikeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -44,6 +45,14 @@ Route::controller(CategoryController::class)->group(function () {
             Route::get('/category/create', 'create')->name('create');
             Route::post('/category', 'store')->name('store');
             Route::get('/category/{category}', 'index')->name('index');
+        });
+    });
+});
+
+Route::controller(LikeController::class)->group(function () {
+    Route::prefix('/article')->group(function () {
+        Route::name('article.')->group(function () {
+            Route::post('/{article}/like', 'like')->name('like');
         });
     });
 });
