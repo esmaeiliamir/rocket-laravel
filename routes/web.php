@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::controller(ArticleController::class)->group(function () {
     Route::get('/', 'index');
-    Route::get('/search', 'search')->name('search');
+//    Route::get('/', 'search')->name('search');
     Route::prefix('/article')->group(function () {
         Route::name('article.')->group(function () {
             Route::get('/rest/all', 'apiAll');

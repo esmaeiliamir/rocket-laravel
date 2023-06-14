@@ -6,39 +6,46 @@ use App\Models\Article;
 use App\Models\Category;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Builder;
 
 class ArticleController extends Controller
 {
-    public function index()
+    // like articles
+    // rating for articles
+    // admin dashboard to show articles
+    // like, comment, rating amount + average rating
+
+    public function index(Request $request)
     {
-        $articles = Article::latest()->paginate(4);
+
+        $allArticlesQuery = Article::query();
+
+        if ($request->input('term') !== null) {
+
+            $term = $request->input('term');
+            $searchValues = explode(' ', $term);
+
+            foreach ($searchValues as $value) {
+                $allArticlesQuery->where(function (Builder $query) use ($value) {
+                    $query->where('title', 'like', '%' . $value . '%')
+                        ->orWhere('body', 'like', '%' . $value . '%');
+                })
+                    ->orWhereHas('user', function (Builder $query) use ($value) {
+                        $query->where('name', 'like', '%' . $value . '%');
+                    })
+                    ->orWhereHas('categories', function (Builder $query) use ($value) {
+                        $query->where('name', 'like', '%' . $value . '%');
+                    });
+            }
+        } else {
+            $allArticlesQuery = Article::query();
+        }
+
+        $articles = $allArticlesQuery->paginate(4);
+
         return view('articles.index', compact('articles'));
-    }
-
-    public function search(Request $request)
-    {
-
-        $articles = Article::whereHas('user', function (Builder $query) use ($request) {
-            $term = $request->input('term');
-            $searchValues = explode(' ', $term);
-
-            foreach ($searchValues as $value) {
-                $query->where('title', 'like', '%' . $value . '%')
-                    ->orWhere('body', 'like', '%' . $value . '%')
-                    ->orWhere('name', 'like', '%' . $value . '%');
-            }
-        })->orWhereHas('categories', function (Builder $query) use ($request) {
-            $term = $request->input('term');
-            $searchValues = explode(' ', $term);
-
-            foreach ($searchValues as $value) {
-                $query->where('name', 'like', '%' . $value . '%');
-            }
-        })->get();
-//        return $articles;
-        return view('articles.search', compact('articles'));
     }
 
     public function apiAll()

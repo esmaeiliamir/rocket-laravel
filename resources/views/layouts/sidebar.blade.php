@@ -4,7 +4,7 @@
     <!-- Blog Search Well -->
     <div class="well">
         <h4>جستجو در بلاگ</h4>
-        <form class="input-group" action="{{ route('search') }}">
+        <form class="input-group" action="/">
             <input type="text" name="term" class="form-control">
             <span class="input-group-btn">
                             <button class="btn btn-default" type="button">
