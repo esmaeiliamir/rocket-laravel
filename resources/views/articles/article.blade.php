@@ -22,6 +22,10 @@
     <p><span class="glyphicon glyphicon-time"></span> ارسال شده در
         تاریخ {{  jdate($article->created_at)->format('%B %d، %Y') }}</p>
 
+    <p>
+        امتیاز: {{ number_format($averageRating, 2) }}
+    </p>
+
     <div style="display: flex;">
         @if($liked)
             <form method="POST" action="{{ route('article.like', $article->id) }}">
@@ -58,7 +62,18 @@
     <hr>
 
     <!-- Blog Comments -->
+<form method="post" role="form" action="{{ route('article.rate', ['article' => $article->id]) }}">
+    <div class="input-group input-group-sm mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-sm">Rate this Post</span>
+        </div>
+        {{ csrf_field() }}
+        <input type="number" name="rating" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+    </div>
 
+    <button type="submit" class="btn btn-primary" style="margin-top: 8px; margin-bottom: 8px">ثبت امتیاز</button>
+
+</form>
     <!-- Comments Form -->
 
     <div class="well">
@@ -71,6 +86,7 @@
                 @endforeach
             </div>
         @endif
+
         @if(Auth::check())
             <h4>ارسال کامنت :</h4>
             <form role="form" action="{{ route('comment.store', ['article' => $article->id]) }}" method="post">

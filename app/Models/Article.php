@@ -41,4 +41,13 @@ class Article extends Model
     {
         return $this->hasMany(Like::class);
     }
+
+    public function rateBy()
+    {
+        return $this->belongsToMany(User::class, 'rates');
+    }
+    public function rates()
+    {
+        return $this->hasMany(Rate::class);
+    }
 }

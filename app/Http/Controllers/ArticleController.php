@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use App\Models\Category;
+use App\Models\Rate;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -92,9 +93,16 @@ class ArticleController extends Controller
     public function show(Article $article)
     {
 
+        $averageRating = Article::with('rates')
+            ->select('article_id', DB::raw('AVG(rates.rate) as average_rating'))
+            ->join('rates', 'article_id', '=', 'rates.article_id')
+            ->groupBy('article_id')
+            ->where('article_id', '=',  $article->id)
+            ->first()->average_rating;
+
         $liked = $article->likedBy->contains(auth()->user());
-//        return auth()->user()->id;
+        $rated = $article->rateBy->contains(auth()->user());
         $comments = $article->comments()->get();
-        return view('articles.article', compact('article', 'comments', 'liked'));
+        return view('articles.article', compact('article', 'comments', 'liked', 'rated', 'averageRating'));
     }
 }

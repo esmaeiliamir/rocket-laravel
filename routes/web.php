@@ -5,6 +5,7 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LikeController;
+use App\Http\Controllers\RatingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -54,6 +55,22 @@ Route::controller(LikeController::class)->group(function () {
         Route::name('article.')->group(function () {
             Route::post('/{article}/like', 'like')->name('like');
         });
+    });
+});
+
+
+Route::controller(RatingController::class)->group(function () {
+    Route::prefix('/article')->group(function () {
+        Route::name('article.')->group(function () {
+            Route::post('/{article}/rate', 'rate')->name('rate');
+        });
+    });
+});
+
+
+Route::controller(ProfileController::class)->group(function () {
+    Route::middleware('auth')->group(function () {
+        Route::get('/admin', [ProfileController::class, 'index'])->name('profile.edit');
     });
 });
 
