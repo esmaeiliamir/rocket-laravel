@@ -44,7 +44,7 @@ class ArticleController extends Controller
             $allArticlesQuery = Article::query();
         }
 
-        $articles = $allArticlesQuery->paginate(4);
+        $articles = $allArticlesQuery->latest()->paginate(4);
 
         return view('articles.index', compact('articles'));
     }
@@ -98,7 +98,7 @@ class ArticleController extends Controller
             ->join('rates', 'article_id', '=', 'rates.article_id')
             ->groupBy('article_id')
             ->where('article_id', '=',  $article->id)
-            ->first()->average_rating;
+            ->first()->average_rating ?? 0;
 
         $liked = $article->likedBy->contains(auth()->user());
         $rated = $article->rateBy->contains(auth()->user());

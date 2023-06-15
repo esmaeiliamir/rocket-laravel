@@ -21,11 +21,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::controller(ArticleController::class)->group(function () {
     Route::get('/', 'index');
-//    Route::get('/', 'search')->name('search');
     Route::prefix('/article')->group(function () {
         Route::name('article.')->group(function () {
             Route::get('/rest/all', 'apiAll');
-            Route::get('/create', 'create');
+            Route::get('/create', 'create')->middleware(['admin', 'auth']);
             Route::post('', 'store')->name('store');
             Route::get('/{article}', 'show')->name('show');
         });
@@ -43,7 +42,7 @@ Route::controller(CommentController::class)->group(function () {
 Route::controller(CategoryController::class)->group(function () {
     Route::prefix('/article')->group(function () {
         Route::name('category.')->group(function () {
-            Route::get('/category/create', 'create')->name('create');
+            Route::get('/category/create', 'create')->name('create')->middleware(['admin', 'auth']);
             Route::post('/category', 'store')->name('store');
             Route::get('/category/{category}', 'index')->name('index');
         });
@@ -67,10 +66,11 @@ Route::controller(RatingController::class)->group(function () {
     });
 });
 
-
-Route::controller(ProfileController::class)->group(function () {
-    Route::middleware('auth')->group(function () {
-        Route::get('/admin', [ProfileController::class, 'index'])->name('profile.edit');
+Route::group(['middleware' => 'admin', 'auth'], function () {
+    Route::controller(ProfileController::class)->group(function () {
+//        Route::middleware('auth')->group(function () {
+            Route::get('/admin', [ProfileController::class, 'index'])->name('profile.edit');
+//        });
     });
 });
 

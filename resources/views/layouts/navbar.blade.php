@@ -46,6 +46,10 @@
                     </li>
 
                     <li>
+                        <a href="/admin">داشبورد ادمین</a>
+                    </li>
+
+                    <li>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
 
