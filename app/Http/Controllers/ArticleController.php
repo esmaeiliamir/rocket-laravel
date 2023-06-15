@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use App\Models\Category;
+use App\Models\Comment;
 use App\Models\Rate;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -13,10 +14,8 @@ use Illuminate\Database\Eloquent\Builder;
 
 class ArticleController extends Controller
 {
-    // like articles
-    // rating for articles
-    // admin dashboard to show articles
-    // like, comment, rating amount + average rating
+
+    // many replies for comments
 
     public function index(Request $request)
     {
@@ -53,7 +52,7 @@ class ArticleController extends Controller
     {
         $articles = Article::all();
         return json_decode($articles);
-        return view('articles.index', compact('articles'));
+//        return view('articles.index', compact('articles'));
     }
 
 
@@ -70,7 +69,6 @@ class ArticleController extends Controller
             'title' => 'required',
             'body' => 'required',
             'category' => 'required',
-//            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ], [
             'title.required' => 'عنوان رو وارد کن.'
         ]);
@@ -105,6 +103,11 @@ class ArticleController extends Controller
         $liked = $article->likedBy->contains(auth()->user());
         $rated = $article->rateBy->contains(auth()->user());
         $comments = $article->comments()->get();
-        return view('articles.article', compact('article', 'comments', 'liked', 'rated', 'averageRating'));
+//        $comments = $article->comments()->where('commentable_type', '=', 'article')->get();
+//        $replies = $article->comments()->where('commentable_type', '=', 'comment')->get();
+        $replies = Comment::where(function ($query) {
+            $query->where('commentable_type', Comment::class);
+        })->get();
+        return view('articles.article', compact('article', 'comments', 'liked', 'rated', 'averageRating', 'replies'));
     }
 }

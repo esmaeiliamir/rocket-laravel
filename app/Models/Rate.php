@@ -10,7 +10,7 @@ class Rate extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'article_id', 'rate'
+        'user_id', 'commentable_id', 'rate'
     ];
 
     public function user()

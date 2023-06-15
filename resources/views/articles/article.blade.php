@@ -63,6 +63,16 @@
     {!! $article->body !!}
     <hr>
 
+    @if(count($errors))
+        <div class="alert alert-warning" role="alert">
+            @foreach($errors->all() as $error)
+                <li>
+                    {{ $error }}
+                </li>
+            @endforeach
+        </div>
+    @endif
+
     @if(Auth::check())
             <form method="post" role="form" action="{{ route('article.rate', ['article' => $article->id]) }}">
                 <div class="input-group input-group-sm mb-3">
@@ -83,16 +93,6 @@
 
         <!-- Comments Form -->
         <div class="well">
-            @if(count($errors))
-                <div class="alert alert-warning" role="alert">
-                    @foreach($errors->all() as $error)
-                        <li>
-                            {{ $error }}
-                        </li>
-                    @endforeach
-                </div>
-            @endif
-
             <h4>ارسال کامنت :</h4>
             <form role="form" action="{{ route('comment.store', ['article' => $article->id]) }}" method="post">
                 {{ csrf_field() }}
@@ -122,7 +122,21 @@
                 </h4>
                 {{ $comment->body }}
             </div>
+            <a href="{{ route('comment.create', ['article' => $article->id, 'comment' => $comment->id]) }}" class="btn btn-primary">ارسال پاسخ</a>
         </div>
+
+            @foreach($replies as $reply)
+                @if($reply->commentable_id == $comment->id)
+            <div class="media" style="margin-right: 8rem;">
+                <div class="media-body" style="opacity: 0.5;">
+                    <h4 class="media-heading">{{ $reply->name }}
+                        <small>ارسال شده در تاریخ {{ jdate($reply->created_at)->format('%B %d, %Y') }} </small>
+                    </h4>
+                    {{ $reply->body }}
+                </div>
+            </div>
+                @endif
+            @endforeach
     @endforeach
 
 @endsection

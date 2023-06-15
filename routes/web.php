@@ -32,9 +32,12 @@ Route::controller(ArticleController::class)->group(function () {
 });
 
 Route::controller(CommentController::class)->group(function () {
+    Route::post('/submit/reply/{comment}', 'submitReply')->name('comment.reply');
     Route::prefix('/article')->group(function () {
         Route::name('comment.')->group(function () {
             Route::post('/{article}/comment', 'store')->name('store');
+            // Reply to a comment
+            Route::get('/comment/reply', 'reply')->name('create');
         });
     });
 });

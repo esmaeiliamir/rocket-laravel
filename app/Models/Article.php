@@ -25,9 +25,17 @@ class Article extends Model
     public function user() {
         return $this->belongsTo(User::class);
     }
-    public function comments() {
-        return $this->hasMany(Comment::class);
-
+//    public function comments() {
+//        return $this->hasMany(Comment::class);
+//
+//    }
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable');
+    }
+    public function commentable()
+    {
+        return $this->morphTo(__FUNCTION__, 'commentable_type', 'commentable_id');
     }
     public function categories() {
         return $this->belongsToMany(Category::class);
