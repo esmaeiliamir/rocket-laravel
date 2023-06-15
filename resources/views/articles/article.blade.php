@@ -64,11 +64,6 @@
     <hr>
 
     @if(Auth::check())
-        @if($rated)
-            You have rated.
-        @endif
-
-        @if(!($rated))
             <form method="post" role="form" action="{{ route('article.rate', ['article' => $article->id]) }}">
                 <div class="input-group input-group-sm mb-3">
                     <div class="input-group-prepend">
@@ -82,7 +77,6 @@
                 </button>
             </form>
         @endif
-    @endif
 
 
     @if(Auth::check())

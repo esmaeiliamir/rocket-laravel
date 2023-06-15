@@ -11,14 +11,18 @@ class RatingController extends Controller
     {
         // Check if the user has already rated the article
         if (auth()->user()->rates()->where('article_id', $article->id)->exists()) {
-            return redirect()->back()->with('error', 'You have already rated this blog post.');
+            auth()->user()->rates()->where('article_id', $article->id)->update([
+                'rate' => $request->post('rating')
+            ]);
+        } else {
+
+            auth()->user()->rates()->create([
+                'article_id' => $article->id,
+                'rate' => $request->post('rating')
+            ]);
         }
-
-        auth()->user()->rates()->create([
-            'article_id' => $article->id,
-            'rate' => $request->post('rating')
-        ]);
-
         return redirect()->back();
+
+
     }
 }

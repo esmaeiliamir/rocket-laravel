@@ -100,6 +100,8 @@ class ArticleController extends Controller
             ->where('article_id', '=',  $article->id)
             ->first()->average_rating ?? 0;
 
+//        $averageRating = Article::withAvg('rates', 'rate');
+
         $liked = $article->likedBy->contains(auth()->user());
         $rated = $article->rateBy->contains(auth()->user());
         $comments = $article->comments()->get();
