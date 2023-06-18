@@ -26,8 +26,8 @@ class RatingController extends Controller
             ]);
         } else {
 
-            auth()->user()->rates()->create([
-                'article_id' => $article->id,
+            $article->rates()->create([
+                'user_id' => auth()->user()->id,
                 'rate' => $request->post('rating')
             ]);
         }

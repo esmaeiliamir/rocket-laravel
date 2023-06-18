@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('likes', function (Blueprint $table) {
-            $table->id();
+//            $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('article_id');
             $table->timestamps();

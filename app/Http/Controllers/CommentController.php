@@ -19,20 +19,21 @@ class CommentController extends Controller
         ]);
 
 
-//        auth()->user()->comments()->create([
-//            'name' => $request->post('name'),
-//            'body' => $request->post('body'),
-//        ]);
+        $article->comments()->create([
+            'user_id' => auth()->user()->id,
+            'name' => $request->post('name'),
+            'body' => $request->post('body'),
+        ]);
 
 
-        $article = Article::findOrFail($article->id);
-
-        $comment = new Comment();
-        $comment->user_id = auth()->user()->id;
-        $comment->name = $request->post('name');
-        $comment->body = $request->post('body');
-
-        $article->comments()->save($comment);
+//        $article = Article::findOrFail($article->id);
+//
+//        $comment = new Comment();
+//        $comment->user_id = auth()->user()->id;
+//        $comment->name = $request->post('name');
+//        $comment->body = $request->post('body');
+//
+//        $article->comments()->save($comment);
 
 //        auth()->user()->comments()->save($comment);
 

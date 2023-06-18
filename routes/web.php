@@ -25,7 +25,9 @@ Route::controller(ArticleController::class)->group(function () {
         Route::name('article.')->group(function () {
             Route::get('/rest/all', 'apiAll');
             Route::get('/create', 'create')->middleware(['admin', 'auth']);
+            Route::get('/edit/{article}', 'edit')->middleware(['admin', 'auth'])->name('edit');
             Route::post('', 'store')->name('store');
+            Route::post('/{article}', 'update')->name('update');
             Route::get('/{article}', 'show')->name('show');
         });
     });
@@ -46,7 +48,7 @@ Route::controller(CategoryController::class)->group(function () {
     Route::prefix('/article')->group(function () {
         Route::name('category.')->group(function () {
             Route::get('/category/create', 'create')->name('create')->middleware(['admin', 'auth']);
-            Route::post('/category', 'store')->name('store');
+            Route::post('/category/store', 'store')->name('store');
             Route::get('/category/{category}', 'index')->name('index');
         });
     });

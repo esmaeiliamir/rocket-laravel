@@ -52,7 +52,6 @@ class ArticleController extends Controller
     {
         $articles = Article::all();
         return json_decode($articles);
-//        return view('articles.index', compact('articles'));
     }
 
 
@@ -60,6 +59,13 @@ class ArticleController extends Controller
     {
         $categories = Category::all()->pluck('name', 'id');
         return view('articles.create', compact('categories'));
+    }
+
+
+    public function edit(Article $article)
+    {
+        $categories = Category::all()->pluck('name', 'id');
+        return view('articles.edit', compact('article', 'categories'));
     }
 
     public function store(Request $request)
@@ -88,6 +94,49 @@ class ArticleController extends Controller
         return redirect('/');
     }
 
+
+    public function update(Article $article, Request $request)
+    {
+
+        $editingArticle = Article::findOrFail($article->id);
+
+
+        $formData = $request->validate([
+            'title' => 'nullable',
+            'body' => 'nullable',
+            'image' => 'nullable',
+            'category' => 'nullable',
+        ]);
+
+        $title = $request->post('title');
+        $body = $request->post('body');
+        $image = $request->post('image');
+
+        if (isset($formData['title'])) {
+            $editingArticle->title = $title;
+        }
+
+        if (isset($formData['body'])) {
+            $editingArticle->body = $body;
+        }
+
+        if (isset($formData['image'])) {
+            $imageName = time() . '.' . $request->image->extension();
+            $request->image->move(public_path('images'), $imageName);
+            $editingArticle->image = $imageName;
+        }
+
+        $editingArticle->categories()->attach($request->post('category'));
+
+
+        $editingArticle->save();
+
+
+//        $article->categories()->attach($request->post('category'));
+
+        return redirect('/');
+    }
+
     public function show(Article $article)
     {
 
@@ -95,16 +144,13 @@ class ArticleController extends Controller
             ->select('article_id', DB::raw('AVG(rates.rate) as average_rating'))
             ->join('rates', 'article_id', '=', 'rates.article_id')
             ->groupBy('article_id')
-            ->where('article_id', '=',  $article->id)
+            ->where('article_id', '=', $article->id)
             ->first()->average_rating ?? 0;
 
-//        $averageRating = Article::withAvg('rates', 'rate');
 
         $liked = $article->likedBy->contains(auth()->user());
         $rated = $article->rateBy->contains(auth()->user());
         $comments = $article->comments()->get();
-//        $comments = $article->comments()->where('commentable_type', '=', 'article')->get();
-//        $replies = $article->comments()->where('commentable_type', '=', 'comment')->get();
         $replies = Comment::where(function ($query) {
             $query->where('commentable_type', Comment::class);
         })->get();

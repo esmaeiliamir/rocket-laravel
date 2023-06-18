@@ -15,6 +15,15 @@
         </a>
     </p>
 
+
+    @if(Auth::check())
+        <form method="get" role="form" action="{{ route('article.edit', $article->id) }}">
+            <button type="submit" class="btn btn-warning" style="margin-top: 8px; margin-bottom: 8px">
+                ویرایش مقاله
+            </button>
+        </form>
+    @endif
+
     <hr>
 
     <!-- Date/Time -->
